@@ -1,0 +1,1501 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Serli Store - Toko Online</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --cyan: #20e7f4;
+      --purple: #7254ff;
+      --navy: #070d20;
+      --panel: #0c1730;
+      --border: #1c3d5b;
+      --store-background: url("https://images.openai.com/static-rsc-4/N4WDa1q-XbylrqxzH1P1zgnMn-ccTANPXHAAHCcJSladJZgLdMIiSV8fK6VEwKhrvAquG4Yewf7drEuvMlB521jVhNzGHZsFYjrpTRvHlLXsI0c49UeHSGa-P9FUgegg1hiEtFs95qZOXYm8yFcDup10pXx4HS4RdxPySaMMG1YKGsLbXcWgKTRb2_dbfH9u?purpose=fullsize");
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--navy);
+      color: #edf7ff;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(7,13,32,.96);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: 1440px;
+      margin: auto;
+      padding: 13px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 22px;
+      font-weight: 850;
+      color: #61f3ff;
+      text-decoration: none;
+    }
+
+    .brand-mark {
+      padding: 9px;
+      border-radius: 10px;
+      background: linear-gradient(135deg,var(--cyan),var(--purple));
+      color: #071326;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .nav-links a {
+      color: #c7d8ee;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .nav-links a:hover { color: var(--cyan); }
+
+    .icon-button {
+      border: 1px solid #1b7892;
+      background: #102847;
+      color: #61f3ff;
+      border-radius: 12px;
+      padding: 10px 13px;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .cart-pill { position: relative; }
+
+    #cart-count {
+      position: absolute;
+      top: -7px;
+      right: -7px;
+      background: var(--cyan);
+      color: #071326;
+      font-size: 10px;
+      border-radius: 50%;
+      width: 19px;
+      height: 19px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero {
+      background:
+        linear-gradient(115deg, rgba(7,13,32,.92), rgba(17,20,58,.78) 55%, rgba(16,29,69,.82)),
+        var(--store-background),
+        radial-gradient(ellipse at 78% 18%,#143c6a 0%,transparent 40%),
+        linear-gradient(115deg,#080e24,#11143a 55%,#101d45);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      border-bottom: 1px solid #1d4c71;
+    }
+
+    .hero-inner {
+      max-width: 1440px;
+      margin: auto;
+      min-height: 360px;
+      padding: 52px 28px;
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      align-items: center;
+      gap: 38px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 8px 13px;
+      border: 1px solid #1c8fa8;
+      background: #0c2d48;
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: 750;
+      margin-bottom: 18px;
+      color: #6af5ff;
+    }
+
+    .hero h2 {
+      margin: 0 0 16px;
+      font-size: clamp(32px,4vw,54px);
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      font-weight: 900;
+      color: #f2fbff;
+    }
+
+    .hero p {
+      color: #b8cce4;
+      font-size: 16px;
+      line-height: 1.75;
+      max-width: 570px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 26px;
+    }
+
+    .hero-btn {
+      display: inline-block;
+      padding: 13px 21px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .hero-btn.primary {
+      background: var(--cyan);
+      color: #061426;
+    }
+
+    .hero-btn.secondary {
+      background: #152b4d;
+      color: #d8faff;
+      border: 1px solid #276b8b;
+    }
+
+    .hero-art {
+      min-height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 22px;
+      background: radial-gradient(circle at 50% 30%,#205c81,#17214a 65%,#0b112a);
+      border: 1px solid #27728b;
+      overflow: hidden;
+    }
+
+    .hero-products {
+      display: flex;
+      align-items: end;
+      justify-content: center;
+      gap: 14px;
+      padding: 25px;
+      width: 100%;
+    }
+
+    .hero-product {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 29%;
+      height: 140px;
+      border-radius: 17px;
+      color: #72f5ff;
+      background: linear-gradient(145deg,#142f52,#0b1833);
+      border: 1px solid #26617c;
+      transform: rotate(-4deg);
+    }
+
+    .hero-product:nth-child(2) {
+      height: 185px;
+      transform: rotate(2deg);
+    }
+
+    .hero-product:nth-child(3) {
+      height: 120px;
+      transform: rotate(5deg);
+      background: linear-gradient(90deg,#126b86,#4939a3);
+      color: #e9ffff;
+    }
+
+    .hero-product span { font-size: 43px; }
+    .hero-product small { font-size: 10px; font-weight: 850; }
+
+    .section {
+      max-width: 1440px;
+      margin: auto;
+      padding: 34px 28px;
+    }
+
+    .section-heading {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .section-heading h3 {
+      margin: 0;
+      font-size: 25px;
+      font-weight: 850;
+    }
+
+    .section-heading p {
+      color: #9db5ce;
+      font-size: 13px;
+    }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(8,minmax(0,1fr));
+      gap: 12px;
+    }
+
+    .category-tile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 11px;
+      padding: 18px 8px 15px;
+      min-height: 105px;
+      background: #0c1730;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      color: #d8eaff;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .category-icon {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      color: #61f3ff;
+      background: #102b49;
+      font-size: 21px;
+    }
+
+    .catalog-section {
+      background: #080f23;
+      border-top: 1px solid #183650;
+    }
+
+    .breadcrumbs {
+      font-size: 12px;
+      color: #9bb5d0;
+      margin-bottom: 20px;
+    }
+
+    .catalog-layout {
+      display: grid;
+      grid-template-columns: 220px minmax(0,1fr) 255px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .filter-panel,
+    .catalog-panel,
+    .promo-panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: 0 8px 28px #0003;
+      color: #eaf6ff;
+    }
+
+    .filter-panel { padding: 20px; }
+    .catalog-panel { padding: 19px; }
+
+    .filter-panel h3,
+    .catalog-panel h3 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 850;
+      color: #f0fbff;
+    }
+
+    .filter-group { margin-top: 21px; }
+
+    .group-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 9px;
+      color: #cde3f7;
+    }
+
+    .search-input,
+    .sort-select {
+      width: 100%;
+      border: 1px solid #244a68;
+      border-radius: 9px;
+      padding: 10px 11px;
+      font-size: 12px;
+      background: #081329;
+      color: #eaf6ff;
+      outline: none;
+    }
+
+    .search-input::placeholder { color: #7894b0; }
+
+    .search-input:focus,
+    .sort-select:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 3px #20e7f41c;
+    }
+
+    .check-list { display: grid; gap: 9px; }
+
+    .check-list label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #a9bfd6;
+      font-size: 12px;
+    }
+
+    .check-list input,
+    .price-range { accent-color: var(--cyan); }
+
+    .price-range { width: 100%; }
+
+    .price-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #a9bfd6;
+      margin-top: 7px;
+    }
+
+    .apply-button {
+      width: 100%;
+      border: 0;
+      border-radius: 9px;
+      padding: 11px;
+      background: linear-gradient(100deg,#24dbe9,#7254ff);
+      color: #061326;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .catalog-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    #product-loading {
+      text-align: center;
+      padding: 48px 10px;
+      color: #9ab5d0;
+    }
+
+    #product-grid {
+      display: grid;
+      grid-template-columns: repeat(3,minmax(0,1fr));
+      gap: 16px;
+    }
+
+    #product-grid > div {
+      border: 1px solid #1b3b59;
+      border-radius: 13px;
+      overflow: hidden;
+      background: #0a142b;
+      box-shadow: 0 5px 20px #0003;
+      transition: transform .2s,box-shadow .2s;
+      min-width: 0;
+    }
+
+    #product-grid > div:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px #00d9ff15;
+      border-color: #2a829b;
+    }
+
+    #product-grid img {
+      height: 155px;
+      width: 100%;
+      object-fit: contain;
+      background: #101e3a;
+      padding: 8px;
+    }
+
+    #product-grid > div > div { padding: 13px; }
+    #product-grid h4 { font-size: 14px; line-height: 1.4; color: #eaf8ff; }
+    #product-grid p { line-height: 1.5; color: #a7bfd7; }
+
+    #product-grid button {
+      border: 0;
+      background: linear-gradient(100deg,#24dbe9,#7254ff);
+      color: #061326;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 10px 11px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .product-price {
+      color: #61f3ff;
+      font-weight: 900;
+      font-size: 14px;
+    }
+
+    .product-stock {
+      margin-top: 8px;
+      font-size: 12px;
+      color: #86efac;
+      font-weight: 700;
+    }
+
+    .product-category {
+      display: inline-block;
+      max-width: 100%;
+      overflow-wrap: anywhere;
+    }
+
+    .promo-panel {
+      padding: 20px 18px;
+      overflow: hidden;
+      position: relative;
+      background:
+        radial-gradient(circle at 100% 0%,#1a4d70 0,transparent 36%),
+        linear-gradient(160deg,#101d3d,#0a132b 78%);
+    }
+
+    .promo-tag {
+      display: inline-block;
+      padding: 7px 9px;
+      border: 1px solid #28758d;
+      border-radius: 999px;
+      color: #69f5ff;
+      background: #0b2c46;
+      font-size: 9px;
+      font-weight: 850;
+      letter-spacing: 1px;
+    }
+
+    .promo-panel h3 {
+      font-size: 22px;
+      line-height: 1.3;
+      font-weight: 900;
+      margin: 16px 0 10px;
+    }
+
+    .promo-panel p {
+      font-size: 12px;
+      line-height: 1.7;
+      color: #a8bfd8;
+    }
+
+    .promo-visual {
+      margin: 20px 0;
+      min-height: 135px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      background: linear-gradient(135deg,#123f60,#30216c);
+      border: 1px solid #236581;
+      font-size: 55px;
+    }
+
+    .promo-link {
+      display: block;
+      padding: 12px;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 9px;
+      background: var(--cyan);
+      color: #061326;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(4,minmax(0,1fr));
+      gap: 15px;
+    }
+
+    .feature-card {
+      padding: 20px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      border-radius: 14px;
+    }
+
+    .feature-card span { font-size: 27px; }
+    .feature-card h4 { margin: 12px 0 8px; font-size: 14px; }
+    .feature-card p { margin: 0; color: #9db5ce; font-size: 12px; line-height: 1.7; }
+
+    .site-footer {
+      border-top: 1px solid var(--border);
+      background: #050a18;
+      padding: 32px 28px;
+      text-align: center;
+      color: #9db5ce;
+    }
+
+    .footer-brand {
+      font-size: 24px;
+      font-weight: 900;
+      color: #61f3ff;
+      margin-bottom: 10px;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .social-links a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 12px 18px;
+      border: 1px solid #244a68;
+      border-radius: 12px;
+      background: #0c1730;
+      color: #eaf6ff;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 800;
+      transition: transform .2s, background .2s;
+    }
+
+    .social-links a:hover {
+      transform: translateY(-3px);
+      background: #102847;
+    }
+
+    .social-links .wa-link {
+      border-color: #168a56;
+      color: #71f5a7;
+    }
+
+    .social-links .ig-link {
+      border-color: #9b3e88;
+      color: #ff9edc;
+    }
+
+    .social-icon {
+      width: 23px;
+      height: 23px;
+      flex-shrink: 0;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background: #020617c9;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .cart-drawer {
+      width: min(100%,480px);
+      height: 100%;
+      overflow-y: auto;
+      background: #081329;
+      border-left: 1px solid #24516d;
+      padding: 24px;
+      box-shadow: -10px 0 40px #0006;
+    }
+
+    .cart-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid #24415c;
+    }
+
+    .cart-header h2 { font-size: 21px; font-weight: 900; }
+
+    .close-button {
+      background: #142846;
+      border: 1px solid #27506b;
+      border-radius: 9px;
+      padding: 8px 12px;
+      color: #d7f8ff;
+      cursor: pointer;
+    }
+
+    #cart-items {
+      display: grid;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .cart-summary {
+      border-top: 1px solid #24415c;
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .cart-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 16px;
+      font-weight: 900;
+      margin-bottom: 18px;
+    }
+
+    /* Informasi pembayaran DANA */
+    .dana-box {
+      margin-bottom: 18px;
+      padding: 15px;
+      border: 1px solid #1b7fd0;
+      border-radius: 12px;
+      background: linear-gradient(135deg,#0c2a4d,#0b1a38);
+    }
+
+    .dana-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 900;
+      color: #6cc4ff;
+      margin-bottom: 6px;
+    }
+
+    .dana-desc {
+      margin: 0 0 12px;
+      font-size: 12px;
+      line-height: 1.6;
+      color: #a9c4de;
+    }
+
+    .dana-number-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border: 1px dashed #2b6f9f;
+      border-radius: 10px;
+      background: #081329;
+    }
+
+    .dana-number {
+      font-size: 17px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      color: #eaf8ff;
+    }
+
+    .dana-copy {
+      border: 0;
+      border-radius: 8px;
+      padding: 9px 13px;
+      background: #118eea;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .dana-copy.copied { background: #16a36a; }
+
+    .checkout-form { display: grid; gap: 13px; }
+
+    .checkout-form label {
+      display: grid;
+      gap: 6px;
+      color: #b9cde2;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .checkout-form input,
+    .checkout-form textarea {
+      width: 100%;
+      border: 1px solid #244a68;
+      border-radius: 9px;
+      padding: 11px;
+      background: #0b1a32;
+      color: #edf7ff;
+      outline: none;
+      font-family: inherit;
+      font-size: 13px;
+    }
+
+    .checkout-form input:focus,
+    .checkout-form textarea:focus {
+      border-color: var(--cyan);
+    }
+
+    .checkout-form textarea {
+      min-height: 75px;
+      resize: vertical;
+    }
+
+    .checkout-submit {
+      width: 100%;
+      border: 0;
+      border-radius: 10px;
+      padding: 14px;
+      background: linear-gradient(100deg,#24dbe9,#7254ff);
+      color: #061326;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .checkout-submit:disabled {
+      opacity: .6;
+      cursor: wait;
+    }
+
+    .empty-cart {
+      color: #90a9c3;
+      text-align: center;
+      padding: 25px 10px;
+      border: 1px dashed #2b4965;
+      border-radius: 12px;
+    }
+
+    .hidden { display: none !important; }
+
+    @media (max-width: 1150px) {
+      .catalog-layout { grid-template-columns: 200px minmax(0,1fr); }
+      .promo-panel { display: none; }
+      #product-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .category-grid { grid-template-columns: repeat(4,minmax(0,1fr)); }
+    }
+
+    @media (max-width: 760px) {
+      .nav-inner { padding: 12px 16px; }
+      .nav-links { display: none; }
+      .hero-inner {
+        grid-template-columns: 1fr;
+        padding: 38px 18px;
+        gap: 24px;
+      }
+      .hero-art { min-height: 220px; }
+      .section { padding: 28px 16px; }
+      .catalog-layout { grid-template-columns: 1fr; }
+      .filter-panel { order: 2; }
+      .catalog-panel { order: 1; padding: 13px; }
+      #product-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+      #product-grid img { height: 145px; }
+      .category-grid { grid-template-columns: repeat(4,minmax(0,1fr)); gap: 8px; }
+      .category-tile { min-height: 90px; font-size: 10px; }
+      .feature-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .catalog-top { align-items: flex-start; flex-direction: column; }
+      .site-footer { padding: 26px 16px; }
+    }
+
+    @media (max-width: 390px) {
+      #product-grid { grid-template-columns: 1fr; }
+      .category-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .feature-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="nav-inner">
+      <a href="#beranda" class="brand">
+        <span class="brand-mark">S</span>
+        <span>Serli Store</span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="#beranda">Beranda</a>
+        <a href="#kategori">Kategori</a>
+        <a href="#produk">Produk</a>
+        <a href="#keunggulan">Keunggulan</a>
+        <a href="#contact">Kontak</a>
+      </nav>
+
+      <button class="icon-button cart-pill" onclick="toggleCart()" aria-label="Buka keranjang">
+        🛒
+        <span id="cart-count">0</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="beranda">
+      <div class="hero-inner">
+        <div>
+          <span class="eyebrow">SELAMAT DATANG DI SERLI STORE</span>
+          <h2>Belanja Mudah, Pilihan Produk Lebih Lengkap</h2>
+          <p>
+            Temukan berbagai kebutuhan sehari-hari mulai dari pakaian, aksesori,
+            makanan, minuman, perlengkapan sekolah, hingga produk elektronik.
+            Pilih produk favoritmu dan pesan dengan mudah melalui WhatsApp.
+          </p>
+
+          <div class="hero-buttons">
+            <a href="#produk" class="hero-btn primary">Belanja Sekarang ↗</a>
+            <a href="#kategori" class="hero-btn secondary">Lihat Kategori</a>
+          </div>
+        </div>
+
+        <div class="hero-art">
+          <div class="hero-products">
+            <div class="hero-product">
+              <span>👕</span>
+              <small>FASHION</small>
+            </div>
+            <div class="hero-product">
+              <span>🛍️</span>
+              <small>SERLI STORE</small>
+            </div>
+            <div class="hero-product">
+              <span>🎧</span>
+              <small>ELEKTRONIK</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="kategori">
+      <div class="section-heading">
+        <h3>Belanja Berdasarkan Kategori</h3>
+        <p>Pilih kategori produk yang kamu butuhkan.</p>
+      </div>
+
+      <div class="category-grid">
+        <div class="category-tile"><span class="category-icon">👕</span><span>Pakaian</span></div>
+        <div class="category-tile"><span class="category-icon">👜</span><span>Aksesori</span></div>
+        <div class="category-tile"><span class="category-icon">🧸</span><span>Mainan</span></div>
+        <div class="category-tile"><span class="category-icon">🍪</span><span>Makanan</span></div>
+        <div class="category-tile"><span class="category-icon">🥤</span><span>Minuman</span></div>
+        <div class="category-tile"><span class="category-icon">📚</span><span>Peralatan Sekolah</span></div>
+        <div class="category-tile"><span class="category-icon">🎧</span><span>Elektronik</span></div>
+        <div class="category-tile"><span class="category-icon">🏠</span><span>Rumah Tangga</span></div>
+      </div>
+    </section>
+
+    <section class="catalog-section" id="produk">
+      <div class="section">
+        <div class="breadcrumbs">Beranda / Katalog Produk</div>
+
+        <div class="catalog-layout">
+          <aside class="filter-panel">
+            <h3>Filter Produk</h3>
+
+            <div class="filter-group">
+              <label class="group-label" for="product-search">Cari produk</label>
+              <input
+                id="product-search"
+                class="search-input"
+                type="search"
+                placeholder="Nama produk atau kategori...">
+            </div>
+
+            <div class="filter-group">
+              <span class="group-label">Kategori</span>
+              <div class="check-list">
+                <label><input type="checkbox" value="pakaian"> Pakaian</label>
+                <label><input type="checkbox" value="aksesori"> Aksesori</label>
+                <label><input type="checkbox" value="mainan"> Mainan</label>
+                <label><input type="checkbox" value="makanan"> Makanan</label>
+                <label><input type="checkbox" value="minuman"> Minuman</label>
+                <label><input type="checkbox" value="sekolah"> Peralatan sekolah</label>
+                <label><input type="checkbox" value="elektronik"> Elektronik</label>
+                <label><input type="checkbox" value="rumah tangga"> Rumah tangga</label>
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <label class="group-label" for="price-range">Harga maksimum</label>
+              <input
+                id="price-range"
+                class="price-range"
+                type="range"
+                min="0"
+                max="1000000"
+                step="10000"
+                value="1000000">
+              <div class="price-labels">
+                <span>Rp 0</span>
+                <span id="price-max-label">Rp 1.000.000</span>
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <label class="group-label" for="sort-products">Urutkan produk</label>
+              <select id="sort-products" class="sort-select">
+                <option value="default">Terbaru / Default</option>
+                <option value="murah">Harga termurah</option>
+                <option value="mahal">Harga termahal</option>
+                <option value="nama">Nama produk</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <button class="apply-button" onclick="resetFilters()">Reset Filter</button>
+            </div>
+          </aside>
+
+          <section class="catalog-panel">
+            <div class="catalog-top">
+              <div>
+                <h3>Katalog Produk</h3>
+                <p id="product-count" class="text-xs text-slate-400 mt-1">Memuat produk...</p>
+              </div>
+              <button class="icon-button" onclick="toggleCart()">🛒 Keranjang</button>
+            </div>
+
+            <div id="product-loading">Sedang memuat produk dari database...</div>
+            <div id="product-grid" class="hidden"></div>
+          </section>
+
+          <aside class="promo-panel">
+            <span class="promo-tag">SERLI STORE • SPECIAL</span>
+            <h3>Belanja Praktis untuk Kebutuhanmu</h3>
+            <p>
+              Jelajahi produk pilihan dengan tampilan yang praktis.
+              Pilih produk, masukkan ke keranjang, lalu pesan langsung melalui WhatsApp.
+            </p>
+            <div class="promo-visual">🛍️</div>
+            <p>Belanja lebih mudah, cepat, dan praktis.</p>
+            <a href="#produk" class="promo-link">Lihat Semua Produk</a>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="keunggulan">
+      <div class="section-heading">
+        <h3>Kenapa Belanja di Serli Store?</h3>
+        <p>Proses belanja yang mudah dan praktis.</p>
+      </div>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <span>🛍️</span>
+          <h4>Produk Beragam</h4>
+          <p>Berbagai pilihan produk tersedia dalam satu toko.</p>
+        </div>
+
+        <div class="feature-card">
+          <span>🔎</span>
+          <h4>Mudah Dicari</h4>
+          <p>Gunakan fitur pencarian dan filter untuk menemukan produk.</p>
+        </div>
+
+        <div class="feature-card">
+          <span>📲</span>
+          <h4>Pesan via WhatsApp</h4>
+          <p>Kirim detail pesanan langsung ke admin dengan praktis.</p>
+        </div>
+
+        <div class="feature-card">
+          <span>📦</span>
+          <h4>Detail Pesanan</h4>
+          <p>Nama produk, jumlah, harga, dan total pesanan disertakan.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="contact">
+    <div class="footer-brand">Serli Store ✦</div>
+    <p>Dukung produk kreatif dan inovatif karya wirausaha muda.</p>
+
+    <div class="social-links">
+      <a
+        class="wa-link"
+        href="https://wa.me/6281234567890"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Hubungi Serli Store melalui WhatsApp">
+        <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M20.52 3.48A11.82 11.82 0 0 0 12.08 0C5.53 0 .2 5.33.2 11.88c0 2.1.55 4.15 1.6 5.96L.1 24l6.31-1.65a11.87 11.87 0 0 0 5.67 1.44h.01c6.55 0 11.88-5.33 11.88-11.88 0-3.17-1.23-6.15-3.45-8.43ZM12.09 21.8a9.9 9.9 0 0 1-5.04-1.38l-.36-.21-3.75.98 1-3.65-.24-.38a9.85 9.85 0 0 1-1.51-5.28c0-5.47 4.45-9.92 9.92-9.92a9.86 9.86 0 0 1 7.02 2.91 9.86 9.86 0 0 1 2.9 7.02c0 5.47-4.45 9.91-9.94 9.91Zm5.44-7.42c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.95 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.47-2.4-1.49-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.49s1.07 2.89 1.22 3.09c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.48 1.69.61.71.22 1.36.19 1.87.11.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.29.17-1.42-.07-.13-.27-.2-.57-.35Z"/>
+        </svg>
+        WhatsApp
+      </a>
+
+      <a
+        class="ig-link"
+        href="https://www.instagram.com/nindia6255?vrfl=dzkxajl4MDFxNnlr"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Kunjungi Instagram Serli Store">
+        <svg class="social-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="2"/>
+          <circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="2"/>
+          <circle cx="17.6" cy="6.6" r="1.2" fill="currentColor"/>
+        </svg>
+        Instagram
+      </a>
+    </div>
+
+    <p>© 2026 Serli Store. All rights reserved.</p>
+    <p style="margin-top:7px;color:#61f3ff;font-weight:700">Powered by Serli Store</p>
+  </footer>
+
+  <div id="cart-modal" class="modal-backdrop hidden" onclick="closeCartOutside(event)">
+    <div class="cart-drawer" role="dialog" aria-modal="true" aria-labelledby="cart-title">
+      <div class="cart-header">
+        <h2 id="cart-title">Keranjang Belanja</h2>
+        <button class="close-button" onclick="toggleCart()">Tutup ✕</button>
+      </div>
+
+      <div id="cart-items">
+        <div class="empty-cart">Keranjang belanja masih kosong.</div>
+      </div>
+
+      <div class="cart-summary">
+        <div class="cart-total-row">
+          <span>Total</span>
+          <span id="cart-total">Rp 0</span>
+        </div>
+
+        <!-- Informasi pembayaran DANA -->
+        <div class="dana-box">
+          <div class="dana-title">💙 Pembayaran via DANA</div>
+          <p class="dana-desc">
+            Transfer sesuai total pesanan ke nomor DANA berikut, lalu kirim bukti
+            pembayaran ke admin melalui WhatsApp.
+          </p>
+          <div class="dana-number-row">
+            <span class="dana-number" id="dana-number">082266430353</span>
+            <button type="button" id="btn-copy-dana" class="dana-copy" onclick="copyDanaNumber()">
+              Salin Nomor
+            </button>
+          </div>
+        </div>
+
+        <form class="checkout-form" id="checkout-form" onsubmit="handleCheckout(event)">
+          <label>
+            Nama lengkap
+            <input id="cust-name" name="nama" type="text" placeholder="Masukkan nama lengkap" required>
+          </label>
+
+          <label>
+            Nomor WhatsApp
+            <input id="cust-phone" name="whatsapp" type="tel" placeholder="Contoh: 081234567890" required>
+          </label>
+
+          <label>
+            Alamat lengkap
+            <textarea id="cust-address" name="alamat" placeholder="Masukkan alamat pengiriman" required></textarea>
+          </label>
+
+          <button id="btn-submit" class="checkout-submit" type="submit">
+            Beli Sekarang via WhatsApp 📲
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbwKThUxoifCF9QqiT1dyHTQUdtUNmnk1WJMmzkaZnQXx_XIPMb5P3K_ZHrejrG-qdOVaQ/exec";
+    const WA_ADMIN = "6285945599813";
+    const DANA_NUMBER = "082266430353";
+
+    let products = [];
+    let cart = [];
+
+    const yearElement = document.getElementById("year");
+    if (yearElement) yearElement.textContent = new Date().getFullYear();
+
+    async function loadProducts() {
+      try {
+        const response = await fetch(API_URL);
+        if (!response.ok) throw new Error("Gagal mengambil data produk");
+
+        const json = await response.json();
+        const data = Array.isArray(json) ? json : (json.data || []);
+
+        products = data.map((p, index) => ({
+          ...p,
+          id: p.id ?? p.ID ?? p.kode ?? index + 1,
+          nama: p.nama || p.nama_produk || p["nama produk"] || p.name || "Produk tanpa nama",
+          kategori: p.kategori || p.category || "Umum",
+          harga: Number(p.harga || p.price || 0),
+          stok: Number(p.stok ?? p.stock ?? 0),
+          foto: p.foto || p.gambar || p.link_foto || p["link foto"] || p.image || p["link gambar"] || "",
+          deskripsi: p.deskripsi || p.description || ""
+        }));
+
+        applyCatalogFilters();
+      } catch (error) {
+        document.getElementById("product-loading").innerHTML =
+          "<p style='color:#fb7185;font-weight:600'>Gagal memuat produk. Periksa URL Google Apps Script dan pastikan Web App sudah diterapkan.</p>";
+        console.error("Load products error:", error);
+      }
+    }
+
+    function escapeHTML(value) {
+      return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[char]);
+    }
+
+    function productCard(product) {
+      const safeId = JSON.stringify(product.id);
+      const photo = escapeHTML(
+        product.foto || "https://via.placeholder.com/300?text=Foto+Produk"
+      );
+
+      return `
+        <div class="flex flex-col">
+          <img
+            src="${photo}"
+            alt="${escapeHTML(product.nama)}"
+            onerror="this.onerror=null;this.src='https://via.placeholder.com/300?text=Foto+Produk'">
+
+          <div class="flex-1 flex flex-col justify-between">
+            <div>
+              <span class="product-category text-xs font-semibold px-2 py-1 rounded-full"
+                style="background:#102b49;color:#61f3ff">
+                ${escapeHTML(product.kategori)}
+              </span>
+
+              <h4 class="font-bold mt-2">${escapeHTML(product.nama)}</h4>
+
+              <p class="text-xs" style="margin-top:5px">
+                ${escapeHTML(product.deskripsi)}
+              </p>
+
+              <p class="product-stock">
+                Stok tersedia: <strong>${Number(product.stok || 0)}</strong>
+              </p>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-slate-700 flex justify-between items-center gap-2">
+              <span class="product-price">
+                Rp ${Number(product.harga || 0).toLocaleString("id-ID")}
+              </span>
+
+              <button onclick='addToCart(${safeId})'>🛒 Tambah</button>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    function addToCart(id) {
+      const product = products.find(p => p.id == id);
+      if (!product) return;
+
+      if (Number(product.stok || 0) <= 0) {
+        alert("Maaf, stok produk ini sedang kosong.");
+        return;
+      }
+
+      const existing = cart.find(item => item.id == id);
+
+      if (existing) {
+        if (existing.qty >= Number(product.stok || 0)) {
+          alert("Jumlah pesanan sudah mencapai stok yang tersedia.");
+          return;
+        }
+        existing.qty += 1;
+      } else {
+        cart.push({ ...product, qty: 1 });
+      }
+
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      document.getElementById("cart-count").innerText =
+        cart.reduce((sum, item) => sum + item.qty, 0);
+
+      const container = document.getElementById("cart-items");
+      container.innerHTML = "";
+
+      if (cart.length === 0) {
+        container.innerHTML =
+          '<div class="empty-cart">Keranjang belanja masih kosong.</div>';
+      }
+
+      let total = 0;
+
+      cart.forEach((item, index) => {
+        const subtotal = Number(item.harga || 0) * item.qty;
+        total += subtotal;
+
+        container.innerHTML += `
+          <div class="flex justify-between items-center bg-slate-800 p-3 rounded-xl text-sm border border-slate-700 gap-3">
+            <div class="min-w-0">
+              <p class="font-semibold text-slate-100">${escapeHTML(item.nama)}</p>
+              <p class="text-xs text-slate-300">
+                Rp ${Number(item.harga || 0).toLocaleString("id-ID")} × ${item.qty}
+              </p>
+              ${item.foto ? `<a href="${escapeHTML(item.foto)}" target="_blank" rel="noopener" class="text-xs underline" style="color:#61f3ff">Lihat foto produk</a>` : ""}
+            </div>
+
+            <button
+              onclick="removeFromCart(${index})"
+              style="color:#fb7185;font-size:12px;font-weight:bold">
+              Hapus
+            </button>
+          </div>`;
+      });
+
+      document.getElementById("cart-total").innerText =
+        "Rp " + total.toLocaleString("id-ID");
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      updateCartUI();
+    }
+
+    function toggleCart() {
+      document.getElementById("cart-modal").classList.toggle("hidden");
+    }
+
+    function closeCartOutside(event) {
+      if (event.target.id === "cart-modal") {
+        document.getElementById("cart-modal").classList.add("hidden");
+      }
+    }
+
+    function resetFilters() {
+      document.getElementById("product-search").value = "";
+      document.getElementById("price-range").value = "1000000";
+      document.getElementById("price-max-label").innerText = "Rp 1.000.000";
+      document.getElementById("sort-products").value = "default";
+
+      document.querySelectorAll(".check-list input").forEach(check => {
+        check.checked = false;
+      });
+
+      applyCatalogFilters();
+    }
+
+    // Salin nomor DANA ke clipboard
+    async function copyDanaNumber() {
+      const button = document.getElementById("btn-copy-dana");
+
+      const showCopied = () => {
+        const original = "Salin Nomor";
+        button.innerText = "Tersalin ✓";
+        button.classList.add("copied");
+        setTimeout(() => {
+          button.innerText = original;
+          button.classList.remove("copied");
+        }, 2000);
+      };
+
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(DANA_NUMBER);
+        } else {
+          const temp = document.createElement("textarea");
+          temp.value = DANA_NUMBER;
+          temp.style.position = "fixed";
+          temp.style.opacity = "0";
+          document.body.appendChild(temp);
+          temp.select();
+          document.execCommand("copy");
+          document.body.removeChild(temp);
+        }
+        showCopied();
+      } catch (error) {
+        console.error("Gagal menyalin nomor DANA:", error);
+        alert("Gagal menyalin. Nomor DANA: " + DANA_NUMBER);
+      }
+    }
+
+    async function handleCheckout(event) {
+      event.preventDefault();
+
+      if (cart.length === 0) {
+        alert("Keranjang belanja Anda masih kosong!");
+        return;
+      }
+
+      const button = document.getElementById("btn-submit");
+      const originalText = button.innerText;
+
+      button.innerText = "Memproses pesanan...";
+      button.disabled = true;
+
+      const invoiceCode = "INV-" + Date.now().toString().slice(-6);
+
+      const items = cart.map(item => ({
+        id: item.id || "",
+        nama: String(item.nama || "Produk tanpa nama").trim(),
+        kategori: String(item.kategori || "Umum").trim(),
+        harga: Number(item.harga || 0),
+        qty: Number(item.qty || 1),
+        foto: String(item.foto || "").trim(),
+        deskripsi: String(item.deskripsi || "").trim()
+      }));
+
+      const payload = {
+        invoice: invoiceCode,
+        nama: document.getElementById("cust-name").value.trim(),
+        whatsapp: document.getElementById("cust-phone").value.trim(),
+        alamat: document.getElementById("cust-address").value.trim(),
+        items: items,
+        total: items.reduce((sum, item) => sum + item.harga * item.qty, 0),
+        tanggal: new Date().toISOString()
+      };
+
+      const whatsappWindow = window.open("about:blank", "_blank");
+
+      try {
+        fetch(API_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+          },
+          body: JSON.stringify(payload),
+          keepalive: true
+        }).catch(error => {
+          console.error("Pengiriman pesanan ke Google Sheets gagal:", error);
+        });
+
+        let message = "Halo Admin, saya ingin konfirmasi pesanan:\n\n";
+        message += `🧾 *Invoice: ${invoiceCode}*\n`;
+        message += `👤 *Nama:* ${payload.nama}\n`;
+        message += `📱 *No. WhatsApp:* ${payload.whatsapp}\n`;
+        message += `📍 *Alamat:* ${payload.alamat}\n\n`;
+        message += "🛍️ *Daftar Belanja:*\n";
+
+        items.forEach((item, index) => {
+          message += `\n${index + 1}. *${item.nama}*\n`;
+          message += `   Kategori: ${item.kategori}\n`;
+          message += `   Harga: Rp ${item.harga.toLocaleString("id-ID")}\n`;
+          message += `   Jumlah: ${item.qty}\n`;
+          message += `   Subtotal: Rp ${(item.harga * item.qty).toLocaleString("id-ID")}\n`;
+
+          if (item.foto) {
+            message += `   Foto produk: ${item.foto}\n`;
+          }
+        });
+
+        message += `\n💰 *Total Pembayaran: Rp ${payload.total.toLocaleString("id-ID")}*\n\n`;
+        message += "💙 *Informasi Pembayaran DANA*\n";
+        message += `Nomor DANA: ${DANA_NUMBER}\n`;
+        message += "Saya akan melakukan pembayaran via DANA dan mengirim bukti transfer setelahnya.\n\n";
+        message += "Terima kasih!";
+
+        const whatsappURL =
+          `https://wa.me/${WA_ADMIN}?text=${encodeURIComponent(message)}`;
+
+        if (whatsappWindow) {
+          whatsappWindow.location.href = whatsappURL;
+        } else {
+          window.location.href = whatsappURL;
+        }
+
+        cart = [];
+        updateCartUI();
+        document.getElementById("cart-modal").classList.add("hidden");
+        event.target.reset();
+
+      } catch (error) {
+        if (whatsappWindow && !whatsappWindow.closed) {
+          whatsappWindow.close();
+        }
+
+        alert("Terjadi kesalahan saat menyiapkan pesanan. Silakan coba kembali.");
+        console.error("Checkout error:", error);
+      } finally {
+        button.innerText = originalText || "Beli Sekarang via WhatsApp 📲";
+        button.disabled = false;
+      }
+    }
+
+    const searchBox = document.getElementById("product-search");
+    const priceRange = document.getElementById("price-range");
+    const sortSelect = document.getElementById("sort-products");
+
+    const categoryChecks = Array.from(
+      document.querySelectorAll(".check-list input")
+    );
+
+    function applyCatalogFilters() {
+      const query = (searchBox.value || "").toLowerCase().trim();
+      const maxPrice = Number(priceRange.value || 1000000);
+
+      const selectedCategories = categoryChecks
+        .filter(check => check.checked)
+        .map(check => check.value.toLowerCase());
+
+      const filtered = products.filter(product => {
+        const searchableText =
+          `${product.nama || ""} ${product.kategori || ""} ${product.deskripsi || ""}`.toLowerCase();
+
+        const matchesSearch = searchableText.includes(query);
+        const matchesPrice = Number(product.harga || 0) <= maxPrice;
+        const category = String(product.kategori || "lainnya").toLowerCase();
+
+        const matchesCategory =
+          selectedCategories.length === 0 ||
+          selectedCategories.some(value => category.includes(value));
+
+        return matchesSearch && matchesPrice && matchesCategory;
+      });
+
+      if (sortSelect.value === "murah") {
+        filtered.sort((a, b) => Number(a.harga || 0) - Number(b.harga || 0));
+      } else if (sortSelect.value === "mahal") {
+        filtered.sort((a, b) => Number(b.harga || 0) - Number(a.harga || 0));
+      } else if (sortSelect.value === "nama") {
+        filtered.sort((a, b) =>
+          String(a.nama || "").localeCompare(String(b.nama || ""), "id")
+        );
+      }
+
+      const grid = document.getElementById("product-grid");
+      grid.innerHTML = filtered.map(productCard).join("");
+
+      document.getElementById("product-loading").classList.add("hidden");
+      grid.classList.remove("hidden");
+
+      document.getElementById("product-count").innerText =
+        `Menampilkan ${filtered.length} produk`;
+    }
+
+    searchBox.addEventListener("input", applyCatalogFilters);
+
+    priceRange.addEventListener("input", () => {
+      document.getElementById("price-max-label").innerText =
+        "Rp " + Number(priceRange.value).toLocaleString("id-ID");
+
+      applyCatalogFilters();
+    });
+
+    sortSelect.addEventListener("change", applyCatalogFilters);
+
+    categoryChecks.forEach(check => {
+      check.addEventListener("change", applyCatalogFilters);
+    });
+
+    loadProducts();
+  </script>
+</body>
+</html>
